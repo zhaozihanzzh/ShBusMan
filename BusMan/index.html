@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style type="text/css">
+		<!--body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}-->
+		body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+		#allmap{height:100%;width:100%;}
+		#r-result{width:100%;}
+	</style>
+  <link rel="shortcut icon" href="#">
+    <title>Tauri App</title>
+    <script type="module" src="/src/main.ts" defer></script>
+    <script src="coordtransform.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://api.map.baidu.com/res/webgl/10/bmap.css">
+  </head>
+
+  <body>
+    <script src="api-key.js"></script>
+    <form class="row" id="load-all-form">
+      <input id="path-input" placeholder="Enter JSON directory..." />
+      <button type="load-all-btn">加载全部</button>
+    </form>
+    <div id="allmap"></div>
+  </body>
+</html>
