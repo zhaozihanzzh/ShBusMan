@@ -211,10 +211,13 @@ class RouteLabelManager {
 
       for (const cand of plan.candidates) {
         for (const offY of offsets) {
-          const l = cand.x - 6;
-          const r = cand.x + labelWidth;
-          const t = cand.y + offY - labelHeight / 2;
-          const b = cand.y + offY + labelHeight / 2;
+          // Test rectangle centered on the candidate point
+          const halfW = labelWidth / 2;
+          const halfH = labelHeight / 2;
+          const l = cand.x - halfW;
+          const r = cand.x + halfW;
+          const t = cand.y + offY - halfH;
+          const b = cand.y + offY + halfH;
 
           let overlapCount = 0;
           for (const occ of occupied) {
@@ -240,15 +243,21 @@ class RouteLabelManager {
 
       if (bestCand) {
         entry.label.setPosition(bestCand.point);
-        entry.label.setOffset(new BMap.Size(0, bestOffsetY));
+        // Center the label on the candidate point (plus vertical offset).
+        // The full label width/height is estimated from text length + padding + border.
+        entry.label.setOffset(new BMap.Size(-labelWidth / 2, bestOffsetY - labelHeight / 2));
         entry.label.setStyle({ fontSize: clampedSize + "px" });
         entry.label.show();
 
-        const l = bestCand.x - 6;
-        const r = bestCand.x + labelWidth;
-        const t = bestCand.y + bestOffsetY - labelHeight / 2;
-        const b = bestCand.y + bestOffsetY + labelHeight / 2;
-        occupied.push({ l, r, t, b });
+        // Record the centered pixel bounding box for subsequent overlap detection.
+        const halfW = labelWidth / 2;
+        const halfH = labelHeight / 2;
+        occupied.push({
+          l: bestCand.x - halfW,
+          r: bestCand.x + halfW,
+          t: bestCand.y + bestOffsetY - halfH,
+          b: bestCand.y + bestOffsetY + halfH,
+        });
       }
     }
   }
